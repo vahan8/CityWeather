@@ -79,9 +79,11 @@ class CitiesFragment : Fragment() {
         ) { permissions ->
             when {
                 permissions.containsKey(ACCESS_FINE_LOCATION) && permissions.get(ACCESS_FINE_LOCATION) == true -> {
+                    isLocationPermissionGranted = true
                     getLocation()
                 }
                 permissions.containsKey(ACCESS_COARSE_LOCATION) && permissions.get(ACCESS_COARSE_LOCATION) == true -> {
+                    isLocationPermissionGranted = true
                     getLocation()
                 }
                 else -> {
@@ -127,8 +129,9 @@ class CitiesFragment : Fragment() {
         super.onResume()
 
         //Check the case when user return after changing location setting
-        if (isLocationPermissionGranted && !isLocationSettingEnabled && LocationHelper.isLocationEnabled(requireContext()))
+        if (isLocationPermissionGranted && !isLocationSettingEnabled && LocationHelper.isLocationEnabled(requireContext())) {
             getLocation()
+        }
     }
 
     private fun showLoading(show: Boolean) {
