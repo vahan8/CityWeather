@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CityWeather</string>
+
+    <string name="temperature_celsius">%1$.2f \u2103</string>
+    <string name="empty_data">No data available</string>
+    <string name="get_location_error">Not able to get location</string>
+    <string name="location_permission_error">We need location access to show nearest cities</string>
+
+</resources>

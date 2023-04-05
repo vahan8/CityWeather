@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/VisionUp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/VisionUpAndroid" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/VisionUpAndroid-Eyecare-" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Weatherate" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app-android-v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/eyecareplusandroid" vcs="Git" />
+  </component>
+</project>
