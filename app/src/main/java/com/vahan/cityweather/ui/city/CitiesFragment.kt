@@ -16,6 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.vahan.cityweather.R
 import com.vahan.cityweather.databinding.FragmentCitiesBinding
 import com.vahan.cityweather.util.LocationHelper
@@ -107,18 +111,20 @@ class CitiesFragment : Fragment() {
     private fun getLocation() {
         isLocationSettingEnabled = LocationHelper.isLocationEnabled(requireContext())
         if (isLocationSettingEnabled) {
-            //If location enabled in settings we get last location and get nearest cities for that location
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
+            //If location is enabled in settings we get current location and get nearest cities for that location
+            showLoading(true)
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
+                override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
+                override fun isCancellationRequested() = false
+            }).addOnSuccessListener { location: Location? ->
                     location?.let {
-                        showLoading(true)
                         viewModel.getCities(it.latitude, it.longitude)
                     }
                 }.addOnFailureListener {
+                    showLoading(false)
                     Toast.makeText(requireContext(), R.string.get_location_error, Toast.LENGTH_LONG).show()
                 }
         } else {
-            //If location id disabled from settings navigate to system location setting
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
         }
