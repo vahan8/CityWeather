@@ -7,7 +7,6 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,7 +113,6 @@ class CitiesFragment : Fragment() {
         if (isLocationSettingEnabled) {
             //If location is enabled in settings we get current location and get nearest cities for that location
             showLoading(true)
-            Log.e("location", "get")
             fusedLocationClient.getCurrentLocation(Priority.PRIORITY_PASSIVE, object : CancellationToken() {
                 override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
                 override fun isCancellationRequested() = false
