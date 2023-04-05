@@ -7,6 +7,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,17 +114,21 @@ class CitiesFragment : Fragment() {
         if (isLocationSettingEnabled) {
             //If location is enabled in settings we get current location and get nearest cities for that location
             showLoading(true)
-            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
+            Log.e("location", "get")
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_PASSIVE, object : CancellationToken() {
                 override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
                 override fun isCancellationRequested() = false
             }).addOnSuccessListener { location: Location? ->
-                    location?.let {
-                        viewModel.getCities(it.latitude, it.longitude)
-                    }
-                }.addOnFailureListener {
+                if (location != null) {
+                    viewModel.getCities(location.latitude, location.longitude)
+                } else {
                     showLoading(false)
                     Toast.makeText(requireContext(), R.string.get_location_error, Toast.LENGTH_LONG).show()
                 }
+            }.addOnFailureListener {
+                showLoading(false)
+                Toast.makeText(requireContext(), R.string.get_location_error, Toast.LENGTH_LONG).show()
+            }
         } else {
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
